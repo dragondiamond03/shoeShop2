@@ -11,7 +11,7 @@ document.body.addEventListener("click", function(e) {
 });
 
 (function() {
-    let fontSize = document.getElementById('fontSize'),
+    var fontSize = document.getElementById('fontSize'),
         testDrive = document.getElementById('testDrive'),
         testText = document.getElementById('testText');
     function updateTest() {
