@@ -1,5 +1,5 @@
 ;(function ($, document, window) {
-    var
+    let
     // default settings object.
         defaults = {
             label: 'MENU',
@@ -62,7 +62,7 @@
     }
 
     Plugin.prototype.init = function () {
-        var $this = this,
+        let $this = this,
             menu = $(this.element),
             settings = this.settings,
             iconClass,
@@ -114,7 +114,7 @@
         $this.mobileNav.attr('class', prefix + '_nav');
         menuBar = $('<div class="' + prefix + '_menu"></div>');
 		if (settings.brand !== '') {
-			var brand = $('<div class="' + prefix + '_brand">'+settings.brand+'</div>');
+			let brand = $('<div class="' + prefix + '_brand">'+settings.brand+'</div>');
 			$(menuBar).append(brand);
 		}
         $this.btn = $(
@@ -137,9 +137,9 @@
         menuBar.append($this.mobileNav);
 
         // iterate over structure adding additional structure
-        var items = $this.mobileNav.find('li');
+        let items = $this.mobileNav.find('li');
         $(items).each(function () {
-            var item = $(this),
+            let item = $(this),
                 data = {};
             data.children = item.children('ul').attr('role', 'menu');
             item.data('menu', data);
@@ -150,7 +150,7 @@
                 // select all text before the child menu
                 // check for anchors
 
-                var a = item.contents(),
+                let a = item.contents(),
                     containsAnchor = false,
                     nodes = [];
 
@@ -166,13 +166,13 @@
                     }
                 });
 
-                var wrapElement = $(
+                let wrapElement = $(
                     '<' + settings.parentTag + ' role="menuitem" aria-haspopup="true" tabindex="-1" class="' + prefix + '_item"/>'
                 );
 
                 // wrap item text with tag and add classes unless we are separating parent links
                 if ((!settings.allowParentLinks || settings.nestedParentLinks) || !containsAnchor) {
-                    var $wrap = $(nodes).wrapAll(wrapElement).parent();
+                    let $wrap = $(nodes).wrapAll(wrapElement).parent();
                     $wrap.addClass(prefix+'_row');
                 } else
                     $(nodes).wrapAll('<span class="'+prefix+'_parent-link '+prefix+'_row"/>').parent();
@@ -186,7 +186,7 @@
                 item.addClass(prefix+'_parent');
 
                 // create parent arrow. wrap with link if parent links and separating
-                var arrowElement = $('<span class="'+prefix+'_arrow">'+(settings.showChildren?settings.openedSymbol:settings.closedSymbol)+'</span>');
+                let arrowElement = $('<span class="'+prefix+'_arrow">'+(settings.showChildren?settings.openedSymbol:settings.closedSymbol)+'</span>');
 
                 if (settings.allowParentLinks && !settings.nestedParentLinks && containsAnchor)
                     arrowElement = arrowElement.wrap(wrapElement).parent();
@@ -224,7 +224,7 @@
 
         // structure is in place, now hide appropriate items
         $(items).each(function () {
-            var data = $(this).data('menu');
+            let data = $(this).data('menu');
             if (!settings.showChildren){
                 $this._visibilityToggle(data.children, null, false, null, true);
             }
@@ -259,7 +259,7 @@
 
         // check for keyboard events on menu button and menu parents
         $($this.btn).keydown(function (e) {
-            var ev = e || event;
+            let ev = e || event;
 
             switch(ev.keyCode) {
                 case Keyboard.ENTER:
@@ -278,7 +278,7 @@
         });
 
         $this.mobileNav.on('keydown', '.'+prefix+'_item', function(e) {
-            var ev = e || event;
+            let ev = e || event;
 
             switch(ev.keyCode) {
                 case Keyboard.ENTER:
@@ -296,31 +296,31 @@
         });
 
         $this.mobileNav.on('keydown', '[role="menuitem"]', function(e) {
-            var ev = e || event;
+            let ev = e || event;
 
             switch(ev.keyCode){
                 case Keyboard.DOWN:
                     e.preventDefault();
-                    var allItems = $(e.target).parent().parent().children().children('[role="menuitem"]:visible');
-                    var idx = allItems.index( e.target );
-                    var nextIdx = idx + 1;
+                    let allItems = $(e.target).parent().parent().children().children('[role="menuitem"]:visible');
+                    let idx = allItems.index( e.target );
+                    let nextIdx = idx + 1;
                     if (allItems.length <= nextIdx) {
                         nextIdx = 0;
                     }
-                    var next = allItems.eq( nextIdx );
+                    let next = allItems.eq( nextIdx );
                     next.focus();
                 break;
                 case Keyboard.UP:
                     e.preventDefault();
-                    var allItems = $(e.target).parent().parent().children().children('[role="menuitem"]:visible');
-                    var idx = allItems.index( e.target );
-                    var next = allItems.eq( idx - 1 );
+                    let allItems = $(e.target).parent().parent().children().children('[role="menuitem"]:visible');
+                    let idx = allItems.index( e.target );
+                    let next = allItems.eq( idx - 1 );
                     next.focus();
                 break;
                 case Keyboard.LEFT:
                     e.preventDefault();
                     if ($(e.target).parent().parent().parent().hasClass(prefix+'_open')) {
-                        var parent = $(e.target).parent().parent().prev();
+                        let parent = $(e.target).parent().parent().prev();
                         parent.focus();
                         $this._itemClick(parent);
                     } else if ($(e.target).parent().parent().hasClass(prefix+'_nav')){
@@ -346,9 +346,9 @@
 
     //toggle menu
     Plugin.prototype._menuToggle = function (el) {
-        var $this = this;
-        var btn = $this.btn;
-        var mobileNav = $this.mobileNav;
+        let $this = this;
+        let btn = $this.btn;
+        let mobileNav = $this.mobileNav;
 
         if (btn.hasClass(prefix+'_collapsed')) {
             btn.removeClass(prefix+'_collapsed');
@@ -363,9 +363,9 @@
 
     // toggle clicked items
     Plugin.prototype._itemClick = function (el) {
-        var $this = this;
-        var settings = $this.settings;
-        var data = el.data('menu');
+        let $this = this;
+        let settings = $this.settings;
+        let data = el.data('menu');
         if (!data) {
             data = {};
             data.arrow = el.children('.'+prefix+'_arrow');
@@ -395,10 +395,10 @@
 
     // toggle actual visibility and accessibility tags
     Plugin.prototype._visibilityToggle = function(el, parent, animate, trigger, init) {
-        var $this = this;
-        var settings = $this.settings;
-        var items = $this._getActionItems(el);
-        var duration = 0;
+        let $this = this;
+        let settings = $this.settings;
+        let items = $this._getActionItems(el);
+        let duration = 0;
         if (animate) {
             duration = settings.duration;
         }
@@ -479,25 +479,25 @@
 
     // set attributes of element and children based on visibility
     Plugin.prototype._setVisAttr = function(el, hidden) {
-        var $this = this;
+        let $this = this;
 
         // select all parents that aren't hidden
-        var nonHidden = el.children('li').children('ul').not('.'+prefix+'_hidden');
+        let nonHidden = el.children('li').children('ul').not('.'+prefix+'_hidden');
 
         // iterate over all items setting appropriate tags
         if (!hidden) {
             nonHidden.each(function(){
-                var ul = $(this);
+                let ul = $(this);
                 ul.attr('aria-hidden','false');
-                var items = $this._getActionItems(ul);
+                let items = $this._getActionItems(ul);
                 items.attr('tabindex', '0');
                 $this._setVisAttr(ul, hidden);
             });
         } else {
             nonHidden.each(function(){
-                var ul = $(this);
+                let ul = $(this);
                 ul.attr('aria-hidden','true');
-                var items = $this._getActionItems(ul);
+                let items = $this._getActionItems(ul);
                 items.attr('tabindex', '-1');
                 $this._setVisAttr(ul, hidden);
             });
@@ -506,11 +506,11 @@
 
     // get all 1st level items that are clickable
     Plugin.prototype._getActionItems = function(el) {
-        var data = el.data("menu");
+        let data = el.data("menu");
         if (!data) {
             data = {};
-            var items = el.children('li');
-            var anchors = items.find('a');
+            let items = el.children('li');
+            let anchors = items.find('a');
             data.links = anchors.add(items.find('.'+prefix+'_item'));
             el.data('menu', data);
         }
@@ -526,26 +526,26 @@
     };
 
     Plugin.prototype.toggle = function(){
-        var $this = this;
+        let $this = this;
         $this._menuToggle();
     };
 
     Plugin.prototype.open = function(){
-        var $this = this;
+        let $this = this;
         if ($this.btn.hasClass(prefix+'_collapsed')) {
             $this._menuToggle();
         }
     };
 
     Plugin.prototype.close = function(){
-        var $this = this;
+        let $this = this;
         if ($this.btn.hasClass(prefix+'_open')) {
             $this._menuToggle();
         }
     };
 
     $.fn[mobileMenu] = function ( options ) {
-        var args = arguments;
+        let args = arguments;
 
         // Is the first parameter an object (options), or was omitted, instantiate a new instance
         if (options === undefined || typeof options === 'object') {
@@ -564,10 +564,10 @@
         } else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
 
             // Cache the method call to make it possible to return a value
-            var returns;
+            let returns;
 
             this.each(function () {
-                var instance = $.data(this, 'plugin_' + mobileMenu);
+                let instance = $.data(this, 'plugin_' + mobileMenu);
 
                 // Tests that there's already a plugin-instance and checks that the requested public method exists
                 if (instance instanceof Plugin && typeof instance[options] === 'function') {
